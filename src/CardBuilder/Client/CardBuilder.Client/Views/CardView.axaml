@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="CardBuilder.Client.Views.CardView">
+    <TabbedPage>
+       <ContentPage Header="Layout">
+       </ContentPage>
+       <ContentPage Header="View">
+            
+       </ContentPage>
+    </TabbedPage>
+</UserControl>

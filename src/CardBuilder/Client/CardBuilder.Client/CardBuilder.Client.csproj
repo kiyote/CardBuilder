@@ -1,26 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-	<AssemblyName>CardBuilder</AssemblyName>
-	<RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-	<!-- Without an explicit RID the build is RID-agnostic and copies the native assets for
+    <AssemblyName>CardBuilder</AssemblyName>
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+    <!-- Without an explicit RID the build is RID-agnostic and copies the native assets for
 		 every RID the dependencies ship. Default to the host RID so only that one is copied;
 		 an explicit -r on the command line still wins. -->
-	<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">$(NETCoreSdkPortableRuntimeIdentifier)</RuntimeIdentifier>
-	<!-- Keep bin\ flat; the RID is already pinned above. -->
-	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-	<!-- Self-contained/single-file are publish-time concerns only (see publish.ps1). Setting
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">$(NETCoreSdkPortableRuntimeIdentifier)</RuntimeIdentifier>
+    <!-- Keep bin\ flat; the RID is already pinned above. -->
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <!-- Self-contained/single-file are publish-time concerns only (see publish.ps1). Setting
 		 them here would copy the entire runtime into every local build. -->
-	<SelfContained>false</SelfContained>
-	<!-- Embed symbols in the assembly instead of emitting a loose .pdb. Keeps line numbers in
+    <SelfContained>false</SelfContained>
+    <!-- Embed symbols in the assembly instead of emitting a loose .pdb. Keeps line numbers in
 		 stack traces and full debugger support, but ships a single file to users. -->
-	<DebugType>embedded</DebugType>
-	<InvariantGlobalization>false</InvariantGlobalization>
+    <DebugType>embedded</DebugType>
+    <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
   <!-- app.manifest is a Windows-only concept; including it for linux RIDs breaks the build. -->
   <PropertyGroup Condition="'$(RuntimeIdentifier)' == '' or $(RuntimeIdentifier.StartsWith('win'))">
-	<ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,6 +38,7 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
   <!-- SkiaSharp/HarfBuzz ship ~100 MB of native .pdb symbols alongside their .dll assets.
@@ -45,18 +46,14 @@
        copy-local set. Our own CardBuilder.pdb is unaffected. -->
   <Target Name="RemoveNativeSymbolsFromOutput" AfterTargets="ResolveReferences">
     <ItemGroup>
-      <ReferenceCopyLocalPaths
-        Remove="@(ReferenceCopyLocalPaths)"
-        Condition="'%(Extension)' == '.pdb' and '%(ReferenceCopyLocalPaths.AssetType)' == 'native'" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Extension)' == '.pdb' and '%(ReferenceCopyLocalPaths.AssetType)' == 'native'" />
     </ItemGroup>
   </Target>
 
   <!-- Publish builds its own file list, so the same symbols have to be filtered again there. -->
   <Target Name="RemoveNativeSymbolsFromPublish" AfterTargets="ComputeResolvedFilesToPublishList">
     <ItemGroup>
-      <ResolvedFileToPublish
-        Remove="@(ResolvedFileToPublish)"
-        Condition="'%(Extension)' == '.pdb' and '%(Filename)' != '$(AssemblyName)'" />
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.pdb' and '%(Filename)' != '$(AssemblyName)'" />
     </ItemGroup>
   </Target>
 </Project>
