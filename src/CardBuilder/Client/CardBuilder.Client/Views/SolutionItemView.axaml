@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:CardBuilder.Client.ViewModels"
+             xmlns:controls="using:CardBuilder.Client.Views.Controls"
+             x:Class="CardBuilder.Client.Views.SolutionItemView"
+             x:DataType="vm:SolutionItemViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="PathIcon.SolutionItem">
+            <Setter Property="Data" Value="{StaticResource Icon_Solution}" />
+        </Style>
+        <Style Selector="PathIcon.ProjectItem">
+            <Setter Property="Data" Value="{StaticResource Icon_Project}" />
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel Orientation="Horizontal">
+        <PathIcon Classes.SolutionItem="{Binding IsSolution}"
+                  Classes.ProjectItem="{Binding IsProject}"
+                  Width="16" Height="16" Margin="0,0,5,0" />
+        <controls:EditableTextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+    </StackPanel>
+</UserControl>

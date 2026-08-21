@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <AssemblyName>CardBuilder</AssemblyName>
@@ -16,6 +16,9 @@
 		 stack traces and full debugger support, but ships a single file to users. -->
     <DebugType>embedded</DebugType>
     <InvariantGlobalization>false</InvariantGlobalization>
+    <!-- Resolve bindings against the view's x:DataType at build time instead of by reflection at
+     runtime, so a binding to a member the view model doesn't have is a compile error. -->
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
   <!-- app.manifest is a Windows-only concept; including it for linux RIDs breaks the build. -->
@@ -24,8 +27,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Remove="Assets\Strings.resx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,8 +43,36 @@
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="bodong.Avalonia.PropertyGrid" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Xaml.Behaviors.Avalonia" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CardBuilder.Core\CardBuilder.Core.csproj" />
+    <ProjectReference Include="..\..\Model\CardBuilder.Model\CardBuilder.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Assets\Strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SolutionTreeView.axaml.cs">
+      <DependentUpon>SolutionTreeView.axaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Assets\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\" />
+    <Folder Include="Converters\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
   <!-- SkiaSharp/HarfBuzz ship ~100 MB of native .pdb symbols alongside their .dll assets.

@@ -3,12 +3,16 @@
         xmlns:vm="using:CardBuilder.Client.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:CardBuilder.Client.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:views="using:CardBuilder.Client.Views"
+        xmlns:apc="using:Avalonia.PropertyGrid.Controls"
+        xmlns:lang="using:CardBuilder.Client.Assets"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
         x:Class="CardBuilder.Client.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="CardBuilder">
+        Title="{Binding Title}">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -19,35 +23,35 @@
     <DockPanel LastChildFill="True">
 
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="_New"  /> <!-- Command="{Binding NewCommand}" -->
-                <MenuItem Header="_Open ..." Command="{Binding OpenFileDialogCommand}" /> <!-- Command="{Binding NewCommand}" -->
+            <MenuItem Header="{x:Static lang:Strings.FileMenu}">
+                <MenuItem Header="{x:Static lang:Strings.FileMenu_NewSolution}"  Command="{Binding CreateNewSolutionCommand}" />
+                <MenuItem Header="{x:Static lang:Strings.FileMenu_OpenSolution}" Command="{Binding OpenFileDialogCommand}" /> <!-- Command="{Binding NewCommand}" -->
                 <Separator />
-                <MenuItem Header="E_xit" Command="{Binding ExitCommand}"/>
+                <MenuItem Header="{x:Static lang:Strings.FileMenu_ExitApplication}" Command="{Binding ExitCommand}"/>
             </MenuItem>
         </Menu>
 
         <CommandBar DockPanel.Dock="Top" FlowDirection="RightToLeft">
             <CommandBar.PrimaryCommands>
-                <CommandBarButton Label="Remove" FlowDirection="LeftToRight">
+                <CommandBarButton Label="{x:Static lang:Strings.Command_RemoveElement}" FlowDirection="LeftToRight">
                     <CommandBarButton.Icon>
-                        <PathIcon Data="{StaticResource RemoveElement}" Width="16" Height="16" />
+                        <PathIcon Data="{StaticResource Icon_RemoveElement}" Width="16" Height="16" />
                     </CommandBarButton.Icon>
                 </CommandBarButton>
-                <CommandBarButton Label="Add" FlowDirection="LeftToRight">
+                <CommandBarButton Label="{x:Static lang:Strings.Command_AddElement}" FlowDirection="LeftToRight">
                     <CommandBarButton.Icon>
-                        <PathIcon Data="{StaticResource AddElement}" Width="16" Height="16" />
+                        <PathIcon Data="{StaticResource Icon_AddElement}" Width="16" Height="16" />
                     </CommandBarButton.Icon>
                 </CommandBarButton>
             </CommandBar.PrimaryCommands>
         </CommandBar>
 
-        <DockPanel LastChildFill="True" >
-            <TreeView DockPanel.Dock="Left">
-                <TreeViewItem Header="Test1"><TreeViewItem Header="Test1 Child"></TreeViewItem></TreeViewItem>
-                <TreeViewItem Header="Test2"><TextBlock Text="Hello" /></TreeViewItem>
-            </TreeView>
-            <views:CardView DockPanel.Dock="Left"></views:CardView>
+        <DockPanel LastChildFill="True">
+            <apc:PropertyGrid DockPanel.Dock="Right" />
+            <Panel Name="ProjectPanel" Background="{DynamicResource SystemRegionBrush}">
+                <!-- Project Tree and Card Layout will be loaded here -->
+                <views:SolutionTreeView DataContext="{Binding SolutionViewModel}" />
+            </Panel>
         </DockPanel>
     </DockPanel>
 

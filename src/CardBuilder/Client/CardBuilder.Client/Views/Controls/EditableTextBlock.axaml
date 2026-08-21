@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="CardBuilder.Client.Views.Controls.EditableTextBlock"
+             x:Name="Root">
+
+    <Panel>
+        <!-- DISPLAY MODE: double-tap to begin editing -->
+        <TextBlock Text="{Binding #Root.Text}"
+                   IsVisible="{Binding !#Root.IsEditing}"
+                   VerticalAlignment="Center"
+                   Padding="5"
+                   DoubleTapped="OnDisplayDoubleTapped">
+            <TextBlock.Styles>
+                <Style Selector="TextBlock:pointerover">
+                    <Setter Property="Cursor" Value="Hand" />
+                </Style>
+            </TextBlock.Styles>
+        </TextBlock>
+
+        <!-- EDIT MODE: the TextBox itself is the scratch buffer -->
+        <TextBox x:Name="EditBox"
+                 IsVisible="{Binding #Root.IsEditing}"
+                 KeyDown="OnEditKeyDown"
+                 LostFocus="OnEditLostFocus" />
+    </Panel>
+</UserControl>

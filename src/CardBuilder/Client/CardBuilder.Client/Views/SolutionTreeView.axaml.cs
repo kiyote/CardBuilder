@@ -2,9 +2,8 @@ using Avalonia.Controls;
 
 namespace CardBuilder.Client.Views;
 
-public partial class MainWindow : Window {
-
-	public MainWindow() {
+public partial class SolutionTreeView : UserControl {
+	public SolutionTreeView() {
 		InitializeComponent();
 	}
 }

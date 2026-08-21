@@ -1,5 +1,6 @@
+using CardBuilder.Client.Assets;
 using CardBuilder.Client.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
+using CardBuilder.Model;
 using CommunityToolkit.Mvvm.Input;
 
 namespace CardBuilder.Client.ViewModels;
@@ -14,6 +15,7 @@ public partial class MainViewModel : ViewModelBase {
 	public MainViewModel() {
 		_shutdownService = default!;
 		_storageService = default!;
+		SolutionViewModel = new SolutionViewModel( Solution.None );
 	}
 
 	public MainViewModel(
@@ -22,10 +24,21 @@ public partial class MainViewModel : ViewModelBase {
 	) {
 		_shutdownService = shutdownService;
 		_storageService = storageService;
+
+		SolutionViewModel = new SolutionViewModel( Solution.None );
 	}
-	
-	[ObservableProperty]
-	public partial string Greeting { get; set; } = "Welcome to Avalonia!";
+
+	public string Title {
+		get {
+			if( SolutionViewModel.Solution != Solution.None ) {
+				return $"{Strings.ApplicationName} - {SolutionViewModel.Solution.Name}";
+			} else {
+				return Strings.ApplicationName;
+			}
+		}
+	}
+
+	public SolutionViewModel SolutionViewModel { get; }
 
 	[RelayCommand]
 	public void ExitCommand() {
@@ -37,5 +50,15 @@ public partial class MainViewModel : ViewModelBase {
 		CancellationToken cancellationToken = default
 	) {
 		_ = await _storageService.OpenFileDialogAsync( "Open Project", cancellationToken );
+	}
+
+	[RelayCommand]
+	public void CreateNewSolution() {
+		SolutionViewModel.Solution = new Solution(
+			"New Solution",
+			[
+				new Project( "New Project")
+			]
+		);
 	}
 }

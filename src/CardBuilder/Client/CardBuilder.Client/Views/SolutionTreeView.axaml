@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:CardBuilder.Client.ViewModels"
+             xmlns:views="using:CardBuilder.Client.Views"
+             x:Class="CardBuilder.Client.Views.SolutionTreeView"
+             x:DataType="vm:SolutionViewModel">
+
+    <TreeView ItemsSource="{Binding SolutionItems}">
+        <TreeView.ItemTemplate>
+            <TreeDataTemplate x:DataType="vm:SolutionItemViewModel" ItemsSource="{Binding Children}">
+                <views:SolutionItemView />
+            </TreeDataTemplate>
+        </TreeView.ItemTemplate>
+    </TreeView>
+</UserControl>

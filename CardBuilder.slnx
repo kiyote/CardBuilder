@@ -11,4 +11,10 @@
   <Folder Name="/src/CardBuilder/Client/">
     <Project Path="src/CardBuilder/Client/CardBuilder.Client/CardBuilder.Client.csproj" />
   </Folder>
+  <Folder Name="/src/CardBuilder/Core/">
+    <Project Path="src/CardBuilder/Core/CardBuilder.Core/CardBuilder.Core.csproj" Id="b20057cb-2e52-412f-845c-69014b61fa3f" />
+  </Folder>
+  <Folder Name="/src/CardBuilder/Model/">
+    <Project Path="src/CardBuilder/Model/CardBuilder.Model/CardBuilder.Model.csproj" Id="838dbf8d-6eb0-4f98-8432-4bfcd159f920" />
+  </Folder>
 </Solution>
