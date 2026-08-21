@@ -7,7 +7,7 @@ namespace CardBuilder.Client.Services;
 
 public class AvaloniaStorageDialogService : IStorageDialogService {
 
-	public async Task<string?> OpenFileDialogAsync(
+	async Task<string?> IStorageDialogService.OpenFileDialogAsync(
 		string title,
 		CancellationToken cancellationToken
 	) {

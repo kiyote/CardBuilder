@@ -2,17 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:CardBuilder.Client.ViewModels"
              xmlns:controls="using:CardBuilder.Client.Views.Controls"
-             x:Class="CardBuilder.Client.Views.SolutionItemView"
-             x:DataType="vm:SolutionItemViewModel">
+             x:Class="CardBuilder.Client.Views.ProjectItemView"
+             x:DataType="vm:ProjectItemViewModel">
 
     <StackPanel Orientation="Horizontal">
         <StackPanel.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Add Project" Command="{Binding AddProjectCommand}" />
+                <MenuItem Header="Remove" Command="{Binding RemoveCommand}" />
             </ContextMenu>
         </StackPanel.ContextMenu>
-        <PathIcon Data="{StaticResource Icon_Solution}"
+        <PathIcon Data="{StaticResource Icon_Project}"
                   Width="16" Height="16" Margin="0,0,5,0" />
-        <controls:EditableTextBlock Text="{Binding Solution.Name}" VerticalAlignment="Center" />
+        <controls:EditableTextBlock Text="{Binding Project.Name}" VerticalAlignment="Center" />
     </StackPanel>
 </UserControl>

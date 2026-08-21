@@ -126,6 +126,15 @@
   <data name="Command_RemoveElement" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="Default_NewProjectName" xml:space="preserve">
+    <value>New Project</value>
+  </data>
+  <data name="Default_NewSolutionName" xml:space="preserve">
+    <value>New Solution</value>
+  </data>
+  <data name="DuplicatedProjectNameFormat" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
   <data name="FileMenu" xml:space="preserve">
     <value>_File</value>
   </data>
@@ -137,5 +146,8 @@
   </data>
   <data name="FileMenu_OpenSolution" xml:space="preserve">
     <value>_Open...</value>
+  </data>
+  <data name="Title_OpenSolution" xml:space="preserve">
+    <value>Open Solution</value>
   </data>
 </root>

@@ -3,13 +3,24 @@
              xmlns:vm="using:CardBuilder.Client.ViewModels"
              xmlns:views="using:CardBuilder.Client.Views"
              x:Class="CardBuilder.Client.Views.SolutionTreeView"
-             x:DataType="vm:SolutionViewModel">
+             x:DataType="vm:SolutionTreeViewModel">
 
     <TreeView ItemsSource="{Binding SolutionItems}">
-        <TreeView.ItemTemplate>
-            <TreeDataTemplate x:DataType="vm:SolutionItemViewModel" ItemsSource="{Binding Children}">
+        <TreeView.Styles>
+            <Style Selector="TreeViewItem" x:DataType="vm:TreeItemViewModel">
+                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+            </Style>
+        </TreeView.Styles>
+
+        <TreeView.DataTemplates>
+            <TreeDataTemplate x:DataType="vm:SolutionItemViewModel" ItemsSource="{Binding Projects}">
                 <views:SolutionItemView />
             </TreeDataTemplate>
-        </TreeView.ItemTemplate>
+
+            <TreeDataTemplate x:DataType="vm:ProjectItemViewModel" > <!-- ItemsSource="{Binding Elements}" -->
+                <views:ProjectItemView />
+            </TreeDataTemplate>
+        </TreeView.DataTemplates>
     </TreeView>
 </UserControl>

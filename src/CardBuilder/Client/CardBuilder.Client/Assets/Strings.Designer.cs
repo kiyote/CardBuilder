@@ -88,6 +88,33 @@ namespace CardBuilder.Client.Assets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Project.
+        /// </summary>
+        public static string Default_NewProjectName {
+            get {
+                return ResourceManager.GetString("Default_NewProjectName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Solution.
+        /// </summary>
+        public static string Default_NewSolutionName {
+            get {
+                return ResourceManager.GetString("Default_NewSolutionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ({1}).
+        /// </summary>
+        public static string DuplicatedProjectNameFormat {
+            get {
+                return ResourceManager.GetString("DuplicatedProjectNameFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _File.
         /// </summary>
         public static string FileMenu {
@@ -120,6 +147,15 @@ namespace CardBuilder.Client.Assets {
         public static string FileMenu_OpenSolution {
             get {
                 return ResourceManager.GetString("FileMenu_OpenSolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Solution.
+        /// </summary>
+        public static string Title_OpenSolution {
+            get {
+                return ResourceManager.GetString("Title_OpenSolution", resourceCulture);
             }
         }
     }

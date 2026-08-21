@@ -1,7 +1,8 @@
 using CardBuilder.Client.Assets;
 using CardBuilder.Client.Services;
-using CardBuilder.Model;
+using CardBuilder.Core;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace CardBuilder.Client.ViewModels;
 
@@ -9,36 +10,31 @@ public partial class MainViewModel : ViewModelBase {
 
 	private readonly IShutdownService _shutdownService;
 	private readonly IStorageDialogService _storageService;
+	private readonly ISolutionManager _solutionManager;
 
 	// We need a public parmaeterless constructor otherwise the Preview will
 	// fail to initialize the object.
 	public MainViewModel() {
 		_shutdownService = default!;
 		_storageService = default!;
-		SolutionViewModel = new SolutionViewModel( Solution.None );
+		_solutionManager = new SolutionManager( new SolutionService(), WeakReferenceMessenger.Default );
+		SolutionViewModel = new SolutionTreeViewModel( _solutionManager, WeakReferenceMessenger.Default );
 	}
 
 	public MainViewModel(
 		IShutdownService shutdownService,
-		IStorageDialogService storageService
+		IStorageDialogService storageService,
+		ISolutionManager solutionManager,
+		IMessenger messenger
 	) {
 		_shutdownService = shutdownService;
 		_storageService = storageService;
+		_solutionManager = solutionManager;
 
-		SolutionViewModel = new SolutionViewModel( Solution.None );
+		SolutionViewModel = new SolutionTreeViewModel( solutionManager, messenger );
 	}
 
-	public string Title {
-		get {
-			if( SolutionViewModel.Solution != Solution.None ) {
-				return $"{Strings.ApplicationName} - {SolutionViewModel.Solution.Name}";
-			} else {
-				return Strings.ApplicationName;
-			}
-		}
-	}
-
-	public SolutionViewModel SolutionViewModel { get; }
+	public SolutionTreeViewModel SolutionViewModel { get; }
 
 	[RelayCommand]
 	public void ExitCommand() {
@@ -49,16 +45,11 @@ public partial class MainViewModel : ViewModelBase {
 	public async Task OpenFileDialogAsync(
 		CancellationToken cancellationToken = default
 	) {
-		_ = await _storageService.OpenFileDialogAsync( "Open Project", cancellationToken );
+		_ = await _storageService.OpenFileDialogAsync( Strings.Title_OpenSolution, cancellationToken );
 	}
 
 	[RelayCommand]
 	public void CreateNewSolution() {
-		SolutionViewModel.Solution = new Solution(
-			"New Solution",
-			[
-				new Project( "New Project")
-			]
-		);
+		_solutionManager.Create( Strings.Default_NewSolutionName );
 	}
 }

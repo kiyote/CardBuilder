@@ -13,7 +13,7 @@ namespace CardBuilder.Client;
 	"Default implementation of ViewLocator involves reflection which may be trimmed away.",
 	Url = "https://docs.avaloniaui.net/docs/concepts/view-locator" )]
 public class ViewLocator : IDataTemplate {
-	public Control? Build(
+	Control? ITemplate<object?, Control?>.Build(
 		object? param
 	) {
 		if( param is null ) {
@@ -30,7 +30,7 @@ public class ViewLocator : IDataTemplate {
 		return new TextBlock { Text = "Not Found: " + name };
 	}
 
-	public bool Match(
+	bool IDataTemplate.Match(
 		object? data
 	) {
 		return data is ViewModelBase;
